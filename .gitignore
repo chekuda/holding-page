@@ -3,6 +3,7 @@
 
 # production
 /dist
+/public/assets/logo.png
 
 # misc
 .DS_Store

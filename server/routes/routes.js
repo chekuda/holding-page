@@ -3,6 +3,7 @@ const Controllers = require('../controllers/saveEmail')
 
 const listofRoutes = express.Router()
 
-listofRoutes.get('/saveemail', Controllers.saveEmail)
+listofRoutes.post('/validate', Controllers.saveEmail)
+listofRoutes.get('/validate', Controllers.redirect)
 
 module.exports = listofRoutes
