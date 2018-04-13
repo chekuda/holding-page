@@ -4,7 +4,7 @@ exports.createDBConnection = (dbUrl) => {
   mongoose.connect(dbUrl)
 
   mongoose.connection.on('connected', () => {
-    console.log('Mongoose connection open to ' + dbUrl)
+    console.log('Mongoose connection open')
   })
 
   mongoose.connection.on('error', err => {
