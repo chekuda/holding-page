@@ -80,8 +80,8 @@ form {
 
 .result {
   padding: 10px 0px;
+  width: 100%;
   margin-top: 5px;
-  width: 250px;
   font-size: 15px;
   text-align: center;
   border-radius: 5px;
@@ -120,6 +120,7 @@ form {
 }
 
 #tandc {
+  display: block;
   visibility: hidden;
 }
 
@@ -139,6 +140,10 @@ form {
     padding: 10px 15px;
   }
 
+  .error {
+    width: auto;
+  }
+
   .main {
     top: 50%;
   }
@@ -151,8 +156,12 @@ form {
     font-size: 25px;
   }
 
+  .result {
+    width: 280px;
+  }
+
   .subtext {
-    padding: 20px 0px 20px 0px;
+    padding: 20px 0px 0px 0px;
   }
 
   #submit-button {
