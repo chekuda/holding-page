@@ -14,69 +14,21 @@
   left: 0;
   background: rgba(0, 0, 0, 0.3);
 }
-.main {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-form {
-  text-align: center;
-}
-#submit-button {
-  padding: 10px 20px;
-  border: none;
-  margin-bottom: 20px;
-  background: #029bff;
-  border-radius: 5px;
-  color: white;
-  font-size: 15px;
-  vertical-align: top;
-}
-#submit-button.disabled{
-  background: #a5a6a7;
-}
-.email-block {
-  display: inline-block;
-}
+
 #email-address {
-  width: 250px;
-  padding: 10px 15px;
-  margin-bottom: 20px;
+  width: 100%;
+  padding: 10px 0;
   border-radius: 5px;
   border: none;
   font-size: 15px;
-}
-.hide {
-  display: none;
-}
-.quote {
-  padding: 10px 0 0 0;
-  color: #fff;
-  font-size: 35px;
   text-align: center;
 }
-.subtext {
-  padding: 20px 0px 20px 0px;
-  color: #fff;
-  font-size: 15px;
-  text-align: center;
+
+.email-block {
+  margin-bottom: 10px;
+  display: block;
 }
-.hastag {
-  padding: 0px 0px 20px 0px;
-  color: #fff;
-  font-size: 15px;
-  text-align: center;
-}
-.result {
-  padding: 10px 0px;
-  margin-top: 5px;
-  width: 250px;
-  font-size: 15px;
-  text-align: center;
-  border-radius: 5px;
-  border: solid 1px;
-}
+
 .error {
   color:#a94442;
   background: #f2dede;
@@ -86,6 +38,77 @@ form {
   -o-animation:      slideDown 0.8s ease-in-out; /* Opera 12+ */
   animation:         slideDown 0.8s linear; /* IE 10+, Fx 29+ */
 }
+
+form {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.hastag {
+  padding: 0px 0px 20px 0px;
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+}
+
+.hide {
+  display: none;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 300px;
+}
+
+.main {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.quote {
+  padding: 10px 0 0 0;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+}
+
+.result {
+  padding: 10px 0px;
+  margin-top: 5px;
+  width: 250px;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 5px;
+  border: solid 1px;
+}
+
+#submit-button {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  background: #029bff;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  vertical-align: top;
+}
+#submit-button.disabled{
+  background: #a5a6a7;
+}
+
+.subtext {
+  padding: 20px 0px 0px 0px;
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+}
+
 .success {
   color:#3c763d;
   background: #dff0d8;
@@ -95,15 +118,7 @@ form {
   -o-animation:      slideDown 0.8s ease-in-out; /* Opera 12+ */
   animation:         slideDown 0.8s linear; /* IE 10+, Fx 29+ */
 }
-.logo {
-  display: block;
-  padding: 50px;
-  text-align: center;
-}
 
-.logo img {
-  width: 400px;
-}
 #tandc {
   visibility: hidden;
 }
@@ -113,10 +128,66 @@ form {
   100% { padding: 10px 0px;}
 }
 
-@media only screen and (min-width: 1200px) {
- /* Add media queries */
+@media only screen and (min-width: 768px) {
+  .email-block {
+    display: inline-block;
+    margin-bottom: 0px;
+  }
+
+  #email-address {
+    width: 250px;
+    padding: 10px 15px;
+  }
+
+  .main {
+    top: 50%;
+  }
+
+  .logo img {
+    width: 400px;
+  }
+
+  .quote {
+    font-size: 25px;
+  }
+
+  .subtext {
+    padding: 20px 0px 20px 0px;
+  }
+
+  #submit-button {
+    width: auto;
+  }
 }
 
-@media only screen and (min-width: 768px) {
-  /* Add media queries */
+@media only screen and (min-width: 1200px) {
+  #email-address {
+    width: 250px;
+    padding: 10px 15px;
+  }
+
+  .email-block {
+    display: inline-block;
+    margin-bottom: 0px;
+  }
+
+  .main {
+    top: 50%;
+  }
+
+  .logo img {
+    width: 400px;
+  }
+
+  .quote {
+    font-size: 35px;
+  }
+
+  .subtext {
+    padding: 20px 0px 20px 0px;
+  }
+
+  #submit-button {
+    width: auto;
+  }
 }
