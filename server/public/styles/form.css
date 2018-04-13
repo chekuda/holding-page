@@ -1,6 +1,6 @@
 .container {
   height: 100vh;
-  background: url('/public/assets/posibleBackground.jpg') no-repeat;
+  background: url('/public/assets/bg_compressed.jpg') no-repeat;
   background-attachment: fixed;
   background-position: center center;
   background-size: cover;
