@@ -161,33 +161,7 @@ form {
 }
 
 @media only screen and (min-width: 1200px) {
-  #email-address {
-    width: 250px;
-    padding: 10px 15px;
-  }
-
-  .email-block {
-    display: inline-block;
-    margin-bottom: 0px;
-  }
-
-  .main {
-    top: 50%;
-  }
-
-  .logo img {
-    width: 400px;
-  }
-
   .quote {
     font-size: 35px;
-  }
-
-  .subtext {
-    padding: 20px 0px 20px 0px;
-  }
-
-  #submit-button {
-    width: auto;
   }
 }
