@@ -1,4 +1,6 @@
 const shared = require('../shared')
+const Client = require('../models/client')
+const { CLIENT_EMAIL_EXIST, INVALID_EMAIL, EMAIL_SAVED } = require('../shared/serverMessages')
 
 exports.saveEmail = (req, res) => {
   if(req.body.checkbox) { // Avoid bots
@@ -8,25 +10,26 @@ exports.saveEmail = (req, res) => {
     const errors = req.validationErrors()
 
     if(errors) {
-      const dataPage = {
-        ...shared,
-        result: {
-          class: 'result error',
-          msg: 'Please insert a valid email'
-        }
-      }
+      const dataPage = INVALID_EMAIL
       res.status(400).render('form', dataPage)
     } else {
-      const dataPage = {
-        ...shared,
-        result: {
-          class: 'result success',
-          msg: 'Welcome to TrekBase'
-        },
-        subtitle: '*Thanks for sign up*',
-        formClass: 'hide'
-      }
-      res.status(201).render('form', dataPage)
+
+      Client.find({ 'email': req.body.email }, (err, docs) => {
+        if(err || docs.length) {
+          res.status(400).render('form', CLIENT_EMAIL_EXIST)
+        } else {
+          const newClient = Client({
+            email: req.body.email
+          })
+          newClient.save( err => {
+            if(err) {
+              res.status(400).render('form', INVALID_EMAIL)
+            } else {
+              res.status(201).render('form', EMAIL_SAVED(req.body.email))
+            }
+          })
+        }
+      })
     }
   }
 }

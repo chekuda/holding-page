@@ -8,6 +8,8 @@
 /server/public/assets/white_final_logo.svg
 /server/public/assets/white_final_logo_transparent.svg
 
+
+
 # misc
 .DS_Store
 .env.local

@@ -1,13 +1,23 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
 const validator = require('express-validator')
 
+const dbconnection = require('./dbconnection/config')
 const Routes = require('./routes/routes')
 const shared = require('./shared')
 
 const app = express()
+
+console.log(process.env.ENV)
+console.log(process.env.REMOTE_DB_URL)
+const dbUrl = process.env.ENV !== 'prod'
+  ? process.env.LOCAL_DB_URL
+  : process.env.REMOTE_DB_URL
+
+dbconnection.createDBConnection(dbUrl)
 
 const port = process.env.PORT || 3000
 
