@@ -110,9 +110,9 @@ form {
 }
 
 .success {
-  color:#3c763d;
-  background: #dff0d8;
-  border-color:#d6e9c6;
+  color: white;
+  background: #557cb5;
+  border-color: #fff;
   -webkit-animation: slideDown 0.8s ease-in-out; /* Safari 4+ */
   -moz-animation:    slideDown 0.8s ease-in-out; /* Fx 5+ */
   -o-animation:      slideDown 0.8s ease-in-out; /* Opera 12+ */
