@@ -1,0 +1,26 @@
+{   "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": ["airbnb-base", "plugin:node/recommended"],
+    "root": true,
+    "rules": {
+        "semi": [
+            2,
+            "never"
+        ],
+        "comma-dangle": [
+            2,
+            "never"
+        ],
+        "arrow-parens": 0,
+        "arrow-body-style": 0,
+        "import/no-extraneous-dependencies": 0,
+        "prefer-destructuring": 0,
+        "prefer-template": 0
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    }
+}

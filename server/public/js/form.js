@@ -3,7 +3,7 @@ const isEmail = (val) => {
 }
 window.onload = () => {
   document.getElementById('email-address').addEventListener('input', ({ target }) => {
-    if(target.value && isEmail(target.value)) {
+    if (target.value && isEmail(target.value)) {
       document.getElementById('submit-button').classList.remove('disabled')
       document.getElementById('submit-button').removeAttribute('disabled')
     } else {

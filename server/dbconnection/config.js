@@ -15,7 +15,7 @@ exports.createDBConnection = (dbUrl) => {
     console.log('Mongoose default connection disconnected ' + err)
   })
 
-  process.on('SIGINT', err => {
+  process.on('SIGINT', () => {
     mongoose.connection.close(() => {
       console.log('Mongoose connection disconnected through app termination')
       process.exit(0)

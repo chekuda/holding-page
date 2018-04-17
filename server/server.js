@@ -11,8 +11,6 @@ const shared = require('./shared')
 
 const app = express()
 
-console.log(process.env.ENV)
-console.log(process.env.REMOTE_DB_URL)
 const dbUrl = process.env.ENV !== 'prod'
   ? process.env.LOCAL_DB_URL
   : process.env.REMOTE_DB_URL
@@ -23,8 +21,9 @@ const port = process.env.PORT || 3000
 
 const exphbsConfig = {
   defaultLayout: 'index',
-  layoutsDir: __dirname + '/views'
+  layoutsDir: path.resolve(__dirname + '/views')
 }
+console.log(exphbsConfig.layoutsDir)
 
 app.engine('handlebars', exphbs(exphbsConfig))
 app.set('views', exphbsConfig.layoutsDir)
@@ -34,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use(validator())
 
-app.use('/public', express.static(__dirname + '/public'))
+app.use('/public', express.static(path.resolve(__dirname + '/public')))
 
 app.use('/form', Routes)
 
