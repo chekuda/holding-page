@@ -1,5 +1,6 @@
 const Client = require('../models/client')
 const { CLIENT_EMAIL_EXIST, INVALID_EMAIL, EMAIL_SAVED } = require('../shared/serverMessages')
+const { transporter, mailCampaing } = require('../smtp/smtp')
 
 exports.saveEmail = (req, res) => {
   if (req.body.checkbox) { // Avoid bots
@@ -19,12 +20,19 @@ exports.saveEmail = (req, res) => {
           const newClient = Client({
             email: req.body.email
           })
-          newClient.save(error => {
-            if (error) {
-              res.status(400).render('form', INVALID_EMAIL)
-            } else {
-              res.status(201).render('form', EMAIL_SAVED(req.body.email))
+          transporter.sendMail(mailCampaing, (mailError) => {
+            if (mailError) {
+              console.log(mailError)
+              // Save log with no email sent
+              return false
             }
+            newClient.save(error => {
+              if (error) {
+                res.status(400).render('form', INVALID_EMAIL)
+              } else {
+                res.status(201).render('form', EMAIL_SAVED(req.body.email))
+              }
+            })
           })
         }
       })
