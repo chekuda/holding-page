@@ -21,19 +21,19 @@ const port = process.env.PORT || 3000
 
 const exphbsConfig = {
   defaultLayout: 'index',
-  layoutsDir: path.resolve(__dirname + '/views')
+  layoutsDir: path.join(__dirname, '/views')
 }
-console.log(exphbsConfig.layoutsDir)
 
 app.engine('handlebars', exphbs(exphbsConfig))
 app.set('views', exphbsConfig.layoutsDir)
 app.set('view engine', 'handlebars')
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(validator())
 
-app.use('/public', express.static(path.resolve(__dirname + '/public')))
+app.use('/public', express.static(path.join(__dirname, '/public')))
+app.use('/dist', express.static(path.join(__dirname, '/public/dist')))
 
 app.use('/form', Routes)
 

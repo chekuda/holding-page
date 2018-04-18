@@ -2,7 +2,7 @@
         "browser": true,
         "es6": true
     },
-    "extends": ["airbnb-base", "plugin:node/recommended"],
+    "extends": "airbnb-base",
     "root": true,
     "rules": {
         "semi": [
@@ -17,7 +17,9 @@
         "arrow-body-style": 0,
         "import/no-extraneous-dependencies": 0,
         "prefer-destructuring": 0,
-        "prefer-template": 0
+        "prefer-template": 0,
+        "no-useless-escape": 0,
+        "global-require": 0
     },
     "parserOptions": {
         "ecmaVersion": 6,
