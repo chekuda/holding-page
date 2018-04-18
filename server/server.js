@@ -4,12 +4,15 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
 const validator = require('express-validator')
+const helmet = require('helmet')
 
 const dbconnection = require('./dbconnection/config')
 const Routes = require('./routes/routes')
 const shared = require('./shared')
 
 const app = express()
+
+app.use(helmet())
 
 const dbUrl = process.env.ENV !== 'prod'
   ? process.env.LOCAL_DB_URL
