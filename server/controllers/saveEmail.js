@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const handlebars = require('handlebars')
 
 const Client = require('../models/client')
 const { CLIENT_EMAIL_EXIST, INVALID_EMAIL, EMAIL_SAVED } = require('../shared/serverMessages')
@@ -23,10 +24,31 @@ exports.saveEmail = (req, res) => {
           const newClient = Client({
             email: req.body.email
           })
-          const filePath = path.join(__dirname, '../smtp/email.html')
+          const filePath = path.join(__dirname, '../smtp/email.handlebars')
+          const defaultMarkup = fs.readFileSync(filePath, 'utf-8')
+          const newTemplate = handlebars.compile(defaultMarkup)
+          const sendTo = (req.body.email.match(/^[^@]+/g) || [])[0]
+          const newMailCampaing = {
+            ...mailCampaing,
+            to: req.body.email,
+            html: newTemplate({ sendTo })
+          }
 
-          fs.readFile(filePath, { encoding: 'utf-8' }, (readError, html) => {
-            if (readError) {
+          if (!defaultMarkup) {
+            newClient.save(error => {
+              if (error) {
+                res.status(400).render('form', INVALID_EMAIL)
+              } else {
+                res.status(201).render('form', EMAIL_SAVED(req.body.email))
+              }
+            })
+          } else {
+            transporter.sendMail(newMailCampaing, (mailError) => {
+              if (mailError) {
+                console.log(mailError)
+                // Save log with no email sent
+                return
+              }
               newClient.save(error => {
                 if (error) {
                   res.status(400).render('form', INVALID_EMAIL)
@@ -34,28 +56,8 @@ exports.saveEmail = (req, res) => {
                   res.status(201).render('form', EMAIL_SAVED(req.body.email))
                 }
               })
-            } else {
-              const newMailCampaing = {
-                ...mailCampaing,
-                to: req.body.email,
-                html
-              }
-              transporter.sendMail(newMailCampaing, (mailError) => {
-                if (mailError) {
-                  console.log(mailError)
-                  // Save log with no email sent
-                  return
-                }
-                newClient.save(error => {
-                  if (error) {
-                    res.status(400).render('form', INVALID_EMAIL)
-                  } else {
-                    res.status(201).render('form', EMAIL_SAVED(req.body.email))
-                  }
-                })
-              })
-            }
-          })
+            })
+          }
         }
       })
     }
