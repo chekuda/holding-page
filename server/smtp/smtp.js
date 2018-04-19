@@ -11,8 +11,8 @@ exports.transporter = nodemailer.createTransport({
 })
 
 exports.mailCampaing = {
-  from: 'no-reply@trekbase.org', // sender address
-  replyTo: 'no-reply@trekbase.org',
+  from: 'info@trekbase.org', // sender address
+  replyTo: 'info@trekbase.org',
   to: 'joselchecaexpo@gmail.com', // list of receivers
   subject: 'Welcome to Trekbase',
   text: 'Trekbase',
