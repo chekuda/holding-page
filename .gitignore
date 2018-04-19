@@ -2,7 +2,9 @@
 /node_modules
 
 # production
-/piblic/dist
+/public/dist
+/public/assets/*logo*
+/public/assets/email/*svg
 
 # misc
 .DS_Store

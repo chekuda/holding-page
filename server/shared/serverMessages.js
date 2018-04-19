@@ -23,6 +23,6 @@ exports.EMAIL_SAVED = (email) => ({
     msg: 'Welcome to TrekBase',
     email
   },
-  subtitle: '*Thanks for sign up*',
+  subtitle: '*Thanks for signing up*',
   formClass: 'hide'
 })
