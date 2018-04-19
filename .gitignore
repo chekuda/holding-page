@@ -2,9 +2,9 @@
 /node_modules
 
 # production
-/public/dist
-/public/assets/ignore/
-/public/assets/email/*svg
+/server/public/dist
+/server/public/assets/ignore
+/server/public/assets/email/*svg
 
 # misc
 .DS_Store
