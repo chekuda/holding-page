@@ -13,7 +13,7 @@ exports.transporter = nodemailer.createTransport({
 exports.mailCampaing = {
   from: 'info@trekbase.org', // sender address
   replyTo: 'info@trekbase.org',
-  to: 'joselchecaexpo@gmail.com', // list of receivers
+  to: '',
   subject: 'Welcome to Trekbase',
   text: 'Trekbase',
   html: '<b>Hello Client</b>'

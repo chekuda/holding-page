@@ -37,6 +37,7 @@ exports.saveEmail = (req, res) => {
             } else {
               const newMailCampaing = {
                 ...mailCampaing,
+                to: req.body.email,
                 html
               }
               transporter.sendMail(newMailCampaing, (mailError) => {
