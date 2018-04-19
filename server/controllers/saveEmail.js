@@ -2,67 +2,91 @@ const fs = require('fs')
 const path = require('path')
 const handlebars = require('handlebars')
 
+const {
+  CLIENT_EMAIL_EXIST,
+  INVALID_EMAIL,
+  EMAIL_SAVED,
+  UNKNOWN_ERROR,
+  COULDNT_SAVE_EMAIL
+} = require('../shared/serverMessages')
 const Client = require('../models/client')
-const { CLIENT_EMAIL_EXIST, INVALID_EMAIL, EMAIL_SAVED } = require('../shared/serverMessages')
+const EventLog = require('../models/eventLog')
 const { transporter, mailCampaing } = require('../smtp/smtp')
 
-exports.saveEmail = (req, res) => {
-  if (req.body.checkbox) { // Avoid bots
-    res.redirect('/')
-  } else {
-    req.checkBody('email', 'error').isEmail()
-    const errors = req.validationErrors()
+const createEmailMarkup = (defaultMarkup, email) => {
+  const newTemplate = handlebars.compile(defaultMarkup)
+  const sendTo = (email.match(/^[^@]+/g) || [])[0]
 
-    if (errors) {
-      const dataPage = INVALID_EMAIL
-      res.status(400).render('form', dataPage)
-    } else {
-      Client.find({ email: req.body.email }, (err, docs) => {
-        if (err || docs.length) {
-          res.status(400).render('form', CLIENT_EMAIL_EXIST)
-        } else {
-          const newClient = Client({
-            email: req.body.email
-          })
-          const filePath = path.join(__dirname, '../smtp/email.handlebars')
-          const defaultMarkup = fs.readFileSync(filePath, 'utf-8')
-          const newTemplate = handlebars.compile(defaultMarkup)
-          const sendTo = (req.body.email.match(/^[^@]+/g) || [])[0]
-          const newMailCampaing = {
-            ...mailCampaing,
-            to: req.body.email,
-            html: newTemplate({ sendTo })
-          }
-
-          if (!defaultMarkup) {
-            newClient.save(error => {
-              if (error) {
-                res.status(400).render('form', INVALID_EMAIL)
-              } else {
-                res.status(201).render('form', EMAIL_SAVED(req.body.email))
-              }
-            })
-          } else {
-            transporter.sendMail(newMailCampaing, (mailError) => {
-              if (mailError) {
-                console.log(mailError)
-                // Save log with no email sent
-                return
-              }
-              newClient.save(error => {
-                if (error) {
-                  res.status(400).render('form', INVALID_EMAIL)
-                } else {
-                  res.status(201).render('form', EMAIL_SAVED(req.body.email))
-                }
-              })
-            })
-          }
-        }
-      })
-    }
+  return {
+    ...mailCampaing,
+    to: email,
+    html: newTemplate({ sendTo })
   }
 }
+
+const emailSender = (newEmail) => transporter.sendMail(newEmail)
+
+const saveEmail = async (req, res) => {
+  let clientSaved = ''
+  let defaultMarkup = ''
+  let newMailCampaing = ''
+  let docs = ''
+
+  if (req.body.checkbox) { // Avoid bots
+    return res.redirect('/')
+  }
+
+  req.checkBody('email', 'error').isEmail()
+  const errors = req.validationErrors()
+
+  if (errors) {
+    return res.status(400).render('form', INVALID_EMAIL)
+  }
+
+  try {
+    docs = await Client.find({ email: req.body.email })
+  } catch (err) {
+    return res.status(500).render('form', UNKNOWN_ERROR(err))
+  }
+
+  if (docs.length) {
+    return res.status(400).render('form', CLIENT_EMAIL_EXIST)
+  }
+
+  try {
+    const newClient = Client({ email: req.body.email })
+    clientSaved = await newClient.save()
+  } catch (err) {
+    return res.status(500).render('form', COULDNT_SAVE_EMAIL(err))
+  }
+
+  try {
+    defaultMarkup = fs.readFileSync(path.join(__dirname, '../smtp/email.handlebars'), 'utf-8')
+    newMailCampaing = createEmailMarkup(defaultMarkup, req.body.email)
+  } catch (err) {
+    return res.status(401).render('form', EMAIL_SAVED({ email: clientSaved.email, error: err }))
+  }
+
+  try {
+    await emailSender(newMailCampaing)
+  } catch (err) {
+    return res.status(401).render('form', EMAIL_SAVED({ email: clientSaved.email, error: err }))
+  }
+
+  try {
+    const eventLog = EventLog({
+      type: req.body.campaign,
+      date: new Date().getTime(),
+      remoteId: clientSaved._id
+    })
+    await eventLog.save()
+    res.status(201).render('form', EMAIL_SAVED({ email: clientSaved.email, sent: true }))
+  } catch (err) {
+    return res.status(401).render('form', EMAIL_SAVED({ email: clientSaved.email, error: err }))
+  }
+}
+
+exports.saveEmail = saveEmail
 
 exports.redirect = (req, res) => {
   res.redirect('/')

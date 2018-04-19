@@ -16,12 +16,32 @@ exports.INVALID_EMAIL = {
   }
 }
 
-exports.EMAIL_SAVED = (email) => ({
+exports.UNKNOWN_ERROR = (error) => ({
+  ...shared,
+  result: {
+    class: 'result error',
+    msg: 'Server Error. Try later',
+    error
+  }
+})
+
+exports.COULDNT_SAVE_EMAIL = (error) => ({
+  ...shared,
+  result: {
+    class: 'result error',
+    msg: 'Server Error. Couldnt save email',
+    error
+  }
+})
+
+exports.EMAIL_SAVED = ({ email, error, sent = false }) => ({
   ...shared,
   result: {
     class: 'result success',
     msg: 'Welcome to TrekBase',
-    email
+    email,
+    email_sent: sent,
+    error
   },
   subtitle: '*Thanks for signing up*',
   formClass: 'hide'
