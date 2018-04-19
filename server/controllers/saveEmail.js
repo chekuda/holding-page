@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const Client = require('../models/client')
 const { CLIENT_EMAIL_EXIST, INVALID_EMAIL, EMAIL_SAVED } = require('../shared/serverMessages')
 const { transporter, mailCampaing } = require('../smtp/smtp')
@@ -20,19 +23,37 @@ exports.saveEmail = (req, res) => {
           const newClient = Client({
             email: req.body.email
           })
-          transporter.sendMail(mailCampaing, (mailError) => {
-            if (mailError) {
-              console.log(mailError)
-              // Save log with no email sent
-              return false
-            }
-            newClient.save(error => {
-              if (error) {
-                res.status(400).render('form', INVALID_EMAIL)
-              } else {
-                res.status(201).render('form', EMAIL_SAVED(req.body.email))
+          const filePath = path.join(__dirname, '../smtp/email.html')
+
+          fs.readFile(filePath, { encoding: 'utf-8' }, (readError, html) => {
+            if (readError) {
+              newClient.save(error => {
+                if (error) {
+                  res.status(400).render('form', INVALID_EMAIL)
+                } else {
+                  res.status(201).render('form', EMAIL_SAVED(req.body.email))
+                }
+              })
+            } else {
+              const newMailCampaing = {
+                ...mailCampaing,
+                html
               }
-            })
+              transporter.sendMail(newMailCampaing, (mailError) => {
+                if (mailError) {
+                  console.log(mailError)
+                  // Save log with no email sent
+                  return
+                }
+                newClient.save(error => {
+                  if (error) {
+                    res.status(400).render('form', INVALID_EMAIL)
+                  } else {
+                    res.status(201).render('form', EMAIL_SAVED(req.body.email))
+                  }
+                })
+              })
+            }
           })
         }
       })

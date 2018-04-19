@@ -14,7 +14,7 @@ exports.mailCampaing = {
   from: 'no-reply@trekbase.org', // sender address
   replyTo: 'no-reply@trekbase.org',
   to: 'joselchecaexpo@gmail.com', // list of receivers
-  subject: 'Welcome to Trekbase', // Subject line
-  text: 'Trekbase', // plain text body
-  html: '<b>Hello Done</b>' // html body
+  subject: 'Welcome to Trekbase',
+  text: 'Trekbase',
+  html: '<b>Hello Client</b>'
 }
