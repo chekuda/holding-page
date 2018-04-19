@@ -3,7 +3,7 @@
 
 # production
 /public/dist
-/public/assets/*logo*
+/public/assets/ignore/
 /public/assets/email/*svg
 
 # misc
