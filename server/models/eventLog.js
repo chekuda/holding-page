@@ -5,7 +5,8 @@ const Schema = mongoose.Schema
 const newSchema = new Schema({
   type: String,
   date: Date,
-  remoteId: Schema.Types.ObjectId
+  remoteId: Schema.Types.ObjectId,
+  randomN: Number
 })
 
 const EventLog = mongoose.model('eventlog', newSchema)

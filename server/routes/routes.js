@@ -1,10 +1,12 @@
 const express = require('express')
 
-const Controllers = require('../controllers/saveEmail')
+const SaveEmail = require('../controllers/saveEmail')
+const Unsubscribe = require('../controllers/unsubscribe')
 
 const listofRoutes = express.Router()
 
-listofRoutes.post('/validate', Controllers.saveEmail)
-listofRoutes.get('/validate', Controllers.redirect)
+listofRoutes.post('/validate', SaveEmail.saveEmail)
+listofRoutes.get('/unsubscribe', Unsubscribe.unsubscribe)
+listofRoutes.get('/validate', SaveEmail.redirect)
 
 module.exports = listofRoutes

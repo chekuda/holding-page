@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const handlebars = require('handlebars')
+const rn = require('random-number')
 
 const {
   CLIENT_EMAIL_EXIST,
@@ -13,14 +14,14 @@ const Client = require('../models/client')
 const EventLog = require('../models/eventLog')
 const { transporter, mailCampaing } = require('../smtp/smtp')
 
-const createEmailMarkup = (defaultMarkup, email) => {
+const createEmailMarkup = (defaultMarkup, email, randomN) => {
   const newTemplate = handlebars.compile(defaultMarkup)
   const sendTo = (email.match(/^[^@]+/g) || [])[0]
 
   return {
     ...mailCampaing,
     to: email,
-    html: newTemplate({ sendTo })
+    html: newTemplate({ sendTo, randomN })
   }
 }
 
@@ -54,7 +55,7 @@ const saveEmail = async (req, res) => {
   }
 
   try {
-    const newClient = Client({ email: req.body.email })
+    const newClient = Client({ email: req.body.email, randomN: rn() })
     clientSaved = await newClient.save()
   } catch (err) {
     return res.status(500).render('form', COULDNT_SAVE_EMAIL(err))
@@ -62,7 +63,7 @@ const saveEmail = async (req, res) => {
 
   try {
     defaultMarkup = fs.readFileSync(path.join(__dirname, '../smtp/email.handlebars'), 'utf-8')
-    newMailCampaing = createEmailMarkup(defaultMarkup, req.body.email)
+    newMailCampaing = createEmailMarkup(defaultMarkup, req.body.email, clientSaved.randomN)
   } catch (err) {
     return res.status(401).render('form', EMAIL_SAVED({ email: clientSaved.email, error: err }))
   }
@@ -77,7 +78,8 @@ const saveEmail = async (req, res) => {
     const eventLog = EventLog({
       type: req.body.campaign,
       date: new Date().getTime(),
-      remoteId: clientSaved._id
+      remoteId: clientSaved._id,
+      randomN: clientSaved.randomN
     })
     await eventLog.save()
     res.status(201).render('form', EMAIL_SAVED({ email: clientSaved.email, sent: true }))

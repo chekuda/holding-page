@@ -46,3 +46,24 @@ exports.EMAIL_SAVED = ({ email, error, sent = false }) => ({
   subtitle: '*Thanks for signing up*',
   formClass: 'hide'
 })
+
+exports.EMAIL_REMOVE_ERROR = (email) => {
+  return {
+    sendTo: email,
+    htmlText: 'Ups! Sorry but we have had some errors in the server so please email us with a brief description of your issue to info@trekbase.org'
+  }
+}
+
+exports.EMAIL_REMOVE_SUCCESS = (email) => {
+  return {
+    sendTo: email,
+    htmlText: 'Your email has been removed successfully. Trekbase team hope see you back again soon'
+  }
+}
+
+exports.EMAIL_REMOVE_ALREADY_DONE = (email) => {
+  return {
+    sendTo: email,
+    htmlText: 'Your email has been removed already. Trekbase team hopes seeing you back again soon.'
+  }
+}
