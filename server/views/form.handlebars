@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="main">
+    <div class="logo">
+    <img src="/public/assets/white_final_logo_transparent.svg"/>
+    </div>
+    <div class="quote">
+      {{quote}}
+    </div>
+    <div class="subtext">
+      {{subtitle}}
+    </div>
+    <div class="form">
+      <form action="/form/validate" method="post">
+        <input type="checkbox" name="checkbox" id="tandc"/>
+        <div class="email-block">
+          <input id="email-address" class={{formClass}} type="text" name="email" placeholder="Enter your email here" />
+          <input name="campaign" value="coming_soon_email_soon" hidden/>
+          <div class="{{result.class}}">
+            <div>{{result.msg}}</div>
+            <div>{{result.email}}</div>
+          </div>
+        </div>
+        <input id="submit-button" class="disabled {{formClass}}" type="submit" value="Submit" disabled/>
+      </form>
+    </div>
+    <div class="hastag">
+      {{hastag}}
+    </div>
+  </div>
+</div>
